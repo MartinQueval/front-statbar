@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { Bar, BarInput } from '../types/bar';
 
-const baseURL = import.meta.env.VITE_API_URL ?? 'https://api-bar-n4v8.onrender.com/api';
+const baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api';
 
 const client = axios.create({ baseURL });
 

@@ -54,8 +54,8 @@ export default function RankingPage() {
       )}
 
       {!loading && !error && bars.length > 0 && (
-        <Paper sx={{ mt: 2 }}>
-          <Table>
+        <Paper sx={{ mt: 2, overflowX: 'auto' }}>
+          <Table sx={{ minWidth: 600 }}>
             <TableHead>
               <TableRow>
                 <TableCell width={60}>#</TableCell>
