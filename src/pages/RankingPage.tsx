@@ -38,7 +38,7 @@ export default function RankingPage() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" fontWeight={700} gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
         Classement des bars
       </Typography>
 
@@ -72,11 +72,11 @@ export default function RankingPage() {
                     {idx < 3 ? (
                       <EmojiEventsIcon sx={{ color: MEDALS[idx] }} />
                     ) : (
-                      <Typography fontWeight={700}>{idx + 1}</Typography>
+                      <Typography sx={{ fontWeight: 700 }}>{idx + 1}</Typography>
                     )}
                   </TableCell>
                   <TableCell>
-                    <Typography fontWeight={600}>{bar.name}</Typography>
+                    <Typography sx={{ fontWeight: 600 }}>{bar.name}</Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Rating value={bar.moy} precision={0.1} max={5} readOnly />

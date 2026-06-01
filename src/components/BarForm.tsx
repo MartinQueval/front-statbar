@@ -99,7 +99,7 @@ export default function BarForm({ initial, submitLabel, submitting, onSubmit, ex
                 <Box key={cat}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography>{NOTE_CATEGORY_LABELS[cat]}</Typography>
-                    <Typography fontWeight={700} color="primary">
+                    <Typography color="primary" sx={{ fontWeight: 700 }}>
                       {notes[cat].toFixed(1)}
                     </Typography>
                   </Box>

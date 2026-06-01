@@ -1,9 +1,11 @@
-export enum NoteCategory {
-  DRINK = 'DRINK',
-  AFFORDABILITY = 'AFFORDABILITY',
-  VIBES = 'VIBES',
-  DECORATION = 'DECORATION',
-}
+export const NoteCategory = {
+  DRINK: 'DRINK',
+  AFFORDABILITY: 'AFFORDABILITY',
+  VIBES: 'VIBES',
+  DECORATION: 'DECORATION',
+} as const;
+
+export type NoteCategory = (typeof NoteCategory)[keyof typeof NoteCategory];
 
 export const NOTE_CATEGORIES: NoteCategory[] = [
   NoteCategory.DRINK,

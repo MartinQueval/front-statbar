@@ -30,7 +30,7 @@ export default function HomePage() {
     <Container maxWidth="lg" sx={{ py: 8 }}>
       <Fade in timeout={600}>
         <Box sx={{ textAlign: 'center', mb: 8 }}>
-          <Typography variant="h2" component="h1" fontWeight={700} gutterBottom>
+          <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
             Bienvenue sur StatBar
           </Typography>
           <Typography variant="h5" color="text.secondary">
@@ -73,7 +73,7 @@ export default function HomePage() {
                     >
                       <Icon color="primary" sx={{ fontSize: 72 }} />
                     </Box>
-                    <Typography variant="h5" gutterBottom fontWeight={600}>
+                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
                       {c.title}
                     </Typography>
                     <Typography color="text.secondary" sx={{ fontSize: '1.05rem' }}>

@@ -26,7 +26,7 @@ export default function AddBarPage() {
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" fontWeight={700} gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
         Ajouter un bar
       </Typography>
       <BarForm submitLabel="Enregistrer" submitting={submitting} onSubmit={handleSubmit} />

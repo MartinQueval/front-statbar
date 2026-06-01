@@ -27,7 +27,7 @@ export default function MapPage() {
 
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" fontWeight={700} gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
         Carte des bars
       </Typography>
 
@@ -53,7 +53,7 @@ export default function MapPage() {
               <Marker key={bar._id} position={[bar.lat, bar.lng]} icon={barIcon}>
                 <Popup>
                   <Box sx={{ minWidth: 180 }}>
-                    <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>
+                    <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 700 }}>
                       {bar.name}
                     </Typography>
                     <Chip
@@ -64,7 +64,7 @@ export default function MapPage() {
                     />
                     <Box>
                       {bar.note.map((n) => (
-                        <Typography key={n.category} variant="caption" display="block">
+                        <Typography key={n.category} variant="caption" sx={{ display: 'block' }}>
                           {NOTE_CATEGORY_LABELS[n.category]} : {n.value}
                         </Typography>
                       ))}
