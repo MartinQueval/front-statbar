@@ -15,6 +15,9 @@ import {
   Rating,
   IconButton,
   Tooltip,
+  Card,
+  CardContent,
+  Stack,
 } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import EditIcon from '@mui/icons-material/Edit';
@@ -23,6 +26,17 @@ import { listBars } from '../api/barApi';
 import type { Bar } from '../types/bar';
 
 const MEDALS = ['#FFD700', '#C0C0C0', '#CD7F32'];
+
+function RankBadge({ index }: { index: number }) {
+  if (index < 3) return <EmojiEventsIcon sx={{ color: MEDALS[index] }} />;
+  return <Typography sx={{ fontWeight: 700 }}>{index + 1}</Typography>;
+}
+
+function moyColor(moy: number) {
+  if (moy >= 3.5) return 'success' as const;
+  if (moy >= 2.5) return 'primary' as const;
+  return 'default' as const;
+}
 
 export default function RankingPage() {
   const [bars, setBars] = useState<Bar[]>([]);
@@ -53,9 +67,69 @@ export default function RankingPage() {
         <Alert severity="info">Aucun bar pour l’instant. Ajoute-en un !</Alert>
       )}
 
+      {/* Mobile: stacked cards */}
       {!loading && !error && bars.length > 0 && (
-        <Paper sx={{ mt: 2, overflowX: 'auto' }}>
-          <Table sx={{ minWidth: 600 }}>
+        <Stack spacing={2} sx={{ mt: 2, display: { xs: 'flex', md: 'none' } }}>
+          {bars.map((bar, idx) => (
+            <Card key={bar._id} variant="outlined">
+              <CardContent sx={{ pb: '16px !important' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: 1,
+                    mb: 1,
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, minWidth: 0 }}>
+                    <RankBadge index={idx} />
+                    <Typography
+                      sx={{
+                        fontWeight: 600,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {bar.name}
+                    </Typography>
+                  </Box>
+                  <IconButton
+                    component={RouterLink}
+                    to={`/modifier/${bar._id}`}
+                    size="small"
+                    aria-label={`Modifier ${bar.name}`}
+                  >
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: 1,
+                  }}
+                >
+                  <Rating value={bar.moy} precision={0.1} max={5} readOnly size="small" />
+                  <Chip
+                    size="small"
+                    label={`${bar.moy.toFixed(2)} / 5`}
+                    color={moyColor(bar.moy)}
+                  />
+                </Box>
+              </CardContent>
+            </Card>
+          ))}
+        </Stack>
+      )}
+
+      {/* Desktop: table */}
+      {!loading && !error && bars.length > 0 && (
+        <Paper sx={{ mt: 2, display: { xs: 'none', md: 'block' } }}>
+          <Table>
             <TableHead>
               <TableRow>
                 <TableCell width={60}>#</TableCell>
@@ -69,11 +143,7 @@ export default function RankingPage() {
               {bars.map((bar, idx) => (
                 <TableRow key={bar._id} hover>
                   <TableCell>
-                    {idx < 3 ? (
-                      <EmojiEventsIcon sx={{ color: MEDALS[idx] }} />
-                    ) : (
-                      <Typography sx={{ fontWeight: 700 }}>{idx + 1}</Typography>
-                    )}
+                    <RankBadge index={idx} />
                   </TableCell>
                   <TableCell>
                     <Typography sx={{ fontWeight: 600 }}>{bar.name}</Typography>
@@ -84,7 +154,7 @@ export default function RankingPage() {
                   <TableCell align="right">
                     <Chip
                       label={`${bar.moy.toFixed(2)} / 5`}
-                      color={bar.moy >= 3.5 ? 'success' : bar.moy >= 2.5 ? 'primary' : 'default'}
+                      color={moyColor(bar.moy)}
                     />
                   </TableCell>
                   <TableCell align="right">
