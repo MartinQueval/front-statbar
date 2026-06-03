@@ -14,13 +14,6 @@ export const NOTE_CATEGORIES: NoteCategory[] = [
   NoteCategory.DECORATION,
 ];
 
-export const NOTE_CATEGORY_LABELS: Record<NoteCategory, string> = {
-  [NoteCategory.DRINK]: 'Boissons',
-  [NoteCategory.AFFORDABILITY]: 'Tarifs',
-  [NoteCategory.VIBES]: 'Ambiance',
-  [NoteCategory.DECORATION]: 'Déco',
-};
-
 export interface Note {
   category: NoteCategory;
   value: number;

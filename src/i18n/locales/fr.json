@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "addBar": "Ajouter un bar",
+    "map": "Carte",
+    "ranking": "Classement",
+    "language": "Langue"
+  },
+  "languages": {
+    "custom": "Custom",
+    "fr": "Français",
+    "en": "English"
+  },
+  "home": {
+    "welcome": "Bienvenue sur StatBar",
+    "subtitle": "Note, cartographie et classe tes bars préférés.",
+    "cta": "Y aller",
+    "cards": {
+      "add": {
+        "title": "Ajouter un bar",
+        "desc": "Saisis le nom, place le pin sur la carte et note le bar pour l’ajouter à la base."
+      },
+      "map": {
+        "title": "Voir la carte",
+        "desc": "Affiche tous les bars sur une carte interactive avec leurs notes."
+      },
+      "ranking": {
+        "title": "Voir le classement",
+        "desc": "Compare les bars par moyenne et trouve les meilleurs spots."
+      }
+    }
+  },
+  "addBar": {
+    "title": "Ajouter un bar"
+  },
+  "editBar": {
+    "title": "Modifier un bar",
+    "update": "Mettre à jour",
+    "delete": "Supprimer",
+    "deleting": "Suppression…",
+    "confirmTitle": "Supprimer ce bar ?",
+    "confirmText": "Cette action est définitive. « {{name}} » sera retiré de la base.",
+    "cancel": "Annuler"
+  },
+  "form": {
+    "nameLabel": "Nom du bar",
+    "nameHelper": "Tape le nom : on cherche le lieu à Rouen et on place le pin.",
+    "noOptions": "Aucun lieu trouvé à Rouen",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "validation": "Renseigne le nom et clique sur la carte pour placer le bar."
+  },
+  "map": {
+    "title": "Carte des bars",
+    "average": "Moyenne : {{value}} / 5"
+  },
+  "ranking": {
+    "title": "Classement des bars",
+    "empty": "Aucun bar pour l’instant. Ajoute-en un !",
+    "colRank": "#",
+    "colBar": "Bar",
+    "colNote": "Note",
+    "colAverage": "Moyenne",
+    "editTooltip": "Modifier / supprimer"
+  },
+  "categories": {
+    "DRINK": "Boissons",
+    "AFFORDABILITY": "Tarifs",
+    "VIBES": "Ambiance",
+    "DECORATION": "Déco"
+  },
+  "common": {
+    "unknownError": "Erreur inconnue"
+  }
+}

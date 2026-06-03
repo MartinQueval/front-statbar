@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import BarForm from '../components/BarForm';
 import { createBar } from '../api/barApi';
 import type { BarInput } from '../types/bar';
 
 export default function AddBarPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (data: BarInput) => {
@@ -18,7 +20,7 @@ export default function AddBarPage() {
       const message =
         (err as { response?: { data?: { error?: string } } }).response?.data?.error ??
         (err as Error).message;
-      alert(message ?? 'Erreur inconnue');
+      alert(message ?? t('common.unknownError'));
     } finally {
       setSubmitting(false);
     }
@@ -27,9 +29,9 @@ export default function AddBarPage() {
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
-        Ajouter un bar
+        {t('addBar.title')}
       </Typography>
-      <BarForm submitLabel="Enregistrer" submitting={submitting} onSubmit={handleSubmit} />
+      <BarForm submitLabel={t('form.save')} submitting={submitting} onSubmit={handleSubmit} />
     </Container>
   );
 }

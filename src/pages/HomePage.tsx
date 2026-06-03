@@ -3,38 +3,25 @@ import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import MapIcon from '@mui/icons-material/Map';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const cards = [
-  {
-    to: '/ajouter',
-    icon: AddLocationAltIcon,
-    title: 'Ajouter un bar',
-    desc: 'Saisis le nom, place le pin sur la carte et note le bar pour l’ajouter à la base.',
-  },
-  {
-    to: '/carte',
-    icon: MapIcon,
-    title: 'Voir la carte',
-    desc: 'Affiche tous les bars sur une carte interactive avec leurs notes.',
-  },
-  {
-    to: '/classement',
-    icon: EmojiEventsIcon,
-    title: 'Voir le classement',
-    desc: 'Compare les bars par moyenne et trouve les meilleurs spots.',
-  },
-];
+  { to: '/ajouter', icon: AddLocationAltIcon, key: 'add' },
+  { to: '/carte', icon: MapIcon, key: 'map' },
+  { to: '/classement', icon: EmojiEventsIcon, key: 'ranking' },
+] as const;
 
 export default function HomePage() {
+  const { t } = useTranslation();
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
       <Fade in timeout={600}>
         <Box sx={{ textAlign: 'center', mb: 8 }}>
           <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
-            Bienvenue sur StatBar
+            {t('home.welcome')}
           </Typography>
           <Typography variant="h5" color="text.secondary">
-            Note, cartographie et classe tes bars préférés.
+            {t('home.subtitle')}
           </Typography>
         </Box>
       </Fade>
@@ -74,10 +61,10 @@ export default function HomePage() {
                       <Icon color="primary" sx={{ fontSize: 72 }} />
                     </Box>
                     <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-                      {c.title}
+                      {t(`home.cards.${c.key}.title`)}
                     </Typography>
                     <Typography color="text.secondary" sx={{ fontSize: '1.05rem' }}>
-                      {c.desc}
+                      {t(`home.cards.${c.key}.desc`)}
                     </Typography>
                   </CardContent>
                   <Box sx={{ p: 2 }}>
@@ -88,7 +75,7 @@ export default function HomePage() {
                       fullWidth
                       size="large"
                     >
-                      Y aller
+                      {t('home.cta')}
                     </Button>
                   </Box>
                 </Card>

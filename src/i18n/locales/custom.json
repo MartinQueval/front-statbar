@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "addBar": "Ajouter un bar",
+    "map": "Carte",
+    "ranking": "Classement",
+    "language": "Langue"
+  },
+  "languages": {
+    "custom": "Custom",
+    "fr": "Français",
+    "en": "English"
+  },
+  "home": {
+    "welcome": "Tu es sur StatBar",
+    "subtitle": "Le classement des bars préférés d'Inès et Martin",
+    "cta": "Y aller",
+    "cards": {
+      "add": {
+        "title": "Ajouter un bar",
+        "desc": "Enregistre le nouveau bar qu'on a fait ensemble"
+      },
+      "map": {
+        "title": "Voir la carte",
+        "desc": "Affiche tous les bars qu'Inès et Martin ont testés"
+      },
+      "ranking": {
+        "title": "Voir le classement",
+        "desc": "Compare nos bars préférés et découvre notre top 3"
+      }
+    }
+  },
+  "addBar": {
+    "title": "Ajouter un bar"
+  },
+  "editBar": {
+    "title": "Modifier un bar",
+    "update": "Mettre à jour",
+    "delete": "Supprimer",
+    "deleting": "Suppression…",
+    "confirmTitle": "Supprimer ce bar ?",
+    "confirmText": "Cette action est définitive. « {{name}} » sera retiré de la base.",
+    "cancel": "Annuler"
+  },
+  "form": {
+    "nameLabel": "Nom du bar",
+    "nameHelper": "Tape le nom : on cherche le lieu à Rouen et on place le pin.",
+    "noOptions": "Aucun lieu trouvé à Rouen",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "validation": "Renseigne le nom et clique sur la carte pour placer le bar."
+  },
+  "map": {
+    "title": "Carte des bars",
+    "average": "Moyenne : {{value}} / 5"
+  },
+  "ranking": {
+    "title": "Classement des bars",
+    "empty": "Aucun bar pour l’instant. Ajoute-en un !",
+    "colRank": "#",
+    "colBar": "Bar",
+    "colNote": "Note",
+    "colAverage": "Moyenne",
+    "editTooltip": "Modifier / supprimer"
+  },
+  "categories": {
+    "DRINK": "Boissons",
+    "AFFORDABILITY": "Qualité / Prix",
+    "VIBES": "Ambiance / Musique",
+    "DECORATION": "Décoration"
+  },
+  "common": {
+    "unknownError": "Erreur inconnue"
+  }
+}

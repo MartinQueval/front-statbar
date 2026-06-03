@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import BarForm from '../components/BarForm';
 import { getBar, updateBar, deleteBar } from '../api/barApi';
 import type { Bar, BarInput } from '../types/bar';
@@ -21,6 +22,7 @@ import type { Bar, BarInput } from '../types/bar';
 export default function EditBarPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [bar, setBar] = useState<Bar | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,7 +50,7 @@ export default function EditBarPage() {
       const message =
         (err as { response?: { data?: { error?: string } } }).response?.data?.error ??
         (err as Error).message;
-      alert(message ?? 'Erreur inconnue');
+      alert(message ?? t('common.unknownError'));
     } finally {
       setSubmitting(false);
     }
@@ -64,7 +66,7 @@ export default function EditBarPage() {
       const message =
         (err as { response?: { data?: { error?: string } } }).response?.data?.error ??
         (err as Error).message;
-      alert(message ?? 'Erreur inconnue');
+      alert(message ?? t('common.unknownError'));
       setDeleting(false);
       setConfirmOpen(false);
     }
@@ -73,7 +75,7 @@ export default function EditBarPage() {
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
-        Modifier un bar
+        {t('editBar.title')}
       </Typography>
 
       {loading && (
@@ -87,7 +89,7 @@ export default function EditBarPage() {
         <>
           <BarForm
             initial={bar}
-            submitLabel="Mettre à jour"
+            submitLabel={t('editBar.update')}
             submitting={submitting}
             onSubmit={handleSubmit}
             extraActions={
@@ -98,24 +100,24 @@ export default function EditBarPage() {
                 onClick={() => setConfirmOpen(true)}
                 disabled={deleting}
               >
-                Supprimer
+                {t('editBar.delete')}
               </Button>
             }
           />
 
           <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
-            <DialogTitle>Supprimer ce bar ?</DialogTitle>
+            <DialogTitle>{t('editBar.confirmTitle')}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Cette action est définitive. « {bar.name} » sera retiré de la base.
+                {t('editBar.confirmText', { name: bar.name })}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setConfirmOpen(false)} disabled={deleting}>
-                Annuler
+                {t('editBar.cancel')}
               </Button>
               <Button onClick={handleDelete} color="error" variant="contained" disabled={deleting}>
-                {deleting ? 'Suppression…' : 'Supprimer'}
+                {deleting ? t('editBar.deleting') : t('editBar.delete')}
               </Button>
             </DialogActions>
           </Dialog>

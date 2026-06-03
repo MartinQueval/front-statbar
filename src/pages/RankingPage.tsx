@@ -22,6 +22,7 @@ import {
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import EditIcon from '@mui/icons-material/Edit';
 import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { listBars } from '../api/barApi';
 import type { Bar } from '../types/bar';
 
@@ -39,6 +40,7 @@ function moyColor(moy: number) {
 }
 
 export default function RankingPage() {
+  const { t } = useTranslation();
   const [bars, setBars] = useState<Bar[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -53,7 +55,7 @@ export default function RankingPage() {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
-        Classement des bars
+        {t('ranking.title')}
       </Typography>
 
       {loading && (
@@ -64,7 +66,7 @@ export default function RankingPage() {
       {error && <Alert severity="error">{error}</Alert>}
 
       {!loading && !error && bars.length === 0 && (
-        <Alert severity="info">Aucun bar pour l’instant. Ajoute-en un !</Alert>
+        <Alert severity="info">{t('ranking.empty')}</Alert>
       )}
 
       {/* Mobile: stacked cards */}
@@ -132,10 +134,10 @@ export default function RankingPage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell width={60}>#</TableCell>
-                <TableCell>Bar</TableCell>
-                <TableCell align="center">Note</TableCell>
-                <TableCell align="right">Moyenne</TableCell>
+                <TableCell width={60}>{t('ranking.colRank')}</TableCell>
+                <TableCell>{t('ranking.colBar')}</TableCell>
+                <TableCell align="center">{t('ranking.colNote')}</TableCell>
+                <TableCell align="right">{t('ranking.colAverage')}</TableCell>
                 <TableCell align="right" width={60}></TableCell>
               </TableRow>
             </TableHead>
@@ -158,7 +160,7 @@ export default function RankingPage() {
                     />
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title="Modifier / supprimer">
+                    <Tooltip title={t('ranking.editTooltip')}>
                       <IconButton
                         component={RouterLink}
                         to={`/modifier/${bar._id}`}

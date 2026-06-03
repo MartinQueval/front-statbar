@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "home": "Home",
+    "addBar": "Add a bar",
+    "map": "Map",
+    "ranking": "Ranking",
+    "language": "Language"
+  },
+  "languages": {
+    "custom": "Custom",
+    "fr": "Français",
+    "en": "English"
+  },
+  "home": {
+    "welcome": "Welcome to StatBar",
+    "subtitle": "Rate, map and rank your favourite bars.",
+    "cta": "Go",
+    "cards": {
+      "add": {
+        "title": "Add a bar",
+        "desc": "Enter the name, drop the pin on the map and rate the bar to add it to the database."
+      },
+      "map": {
+        "title": "View the map",
+        "desc": "Show every bar on an interactive map with their ratings."
+      },
+      "ranking": {
+        "title": "View the ranking",
+        "desc": "Compare bars by average score and find the best spots."
+      }
+    }
+  },
+  "addBar": {
+    "title": "Add a bar"
+  },
+  "editBar": {
+    "title": "Edit a bar",
+    "update": "Update",
+    "delete": "Delete",
+    "deleting": "Deleting…",
+    "confirmTitle": "Delete this bar?",
+    "confirmText": "This action is permanent. “{{name}}” will be removed from the database.",
+    "cancel": "Cancel"
+  },
+  "form": {
+    "nameLabel": "Bar name",
+    "nameHelper": "Type the name: we look it up in Rouen and place the pin.",
+    "noOptions": "No place found in Rouen",
+    "save": "Save",
+    "saving": "Saving…",
+    "validation": "Enter the name and click the map to place the bar."
+  },
+  "map": {
+    "title": "Bars map",
+    "average": "Average: {{value}} / 5"
+  },
+  "ranking": {
+    "title": "Bars ranking",
+    "empty": "No bar yet. Add one!",
+    "colRank": "#",
+    "colBar": "Bar",
+    "colNote": "Rating",
+    "colAverage": "Average",
+    "editTooltip": "Edit / delete"
+  },
+  "categories": {
+    "DRINK": "Drinks",
+    "AFFORDABILITY": "Affordability",
+    "VIBES": "Vibes",
+    "DECORATION": "Decoration"
+  },
+  "common": {
+    "unknownError": "Unknown error"
+  }
+}

@@ -14,6 +14,8 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -22,16 +24,47 @@ import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import MapIcon from '@mui/icons-material/Map';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import CloseIcon from '@mui/icons-material/Close';
+import CheckIcon from '@mui/icons-material/Check';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { LANGUAGES, changeLanguage } from '../i18n';
+import type { Language } from '../i18n';
 
 const links = [
-  { to: '/', label: 'Accueil', end: true, icon: <HomeIcon /> },
-  { to: '/ajouter', label: 'Ajouter un bar', icon: <AddLocationAltIcon /> },
-  { to: '/carte', label: 'Carte', icon: <MapIcon /> },
-  { to: '/classement', label: 'Classement', icon: <EmojiEventsIcon /> },
+  { to: '/', labelKey: 'nav.home', end: true, icon: <HomeIcon /> },
+  { to: '/ajouter', labelKey: 'nav.addBar', icon: <AddLocationAltIcon /> },
+  { to: '/carte', labelKey: 'nav.map', icon: <MapIcon /> },
+  { to: '/classement', labelKey: 'nav.ranking', icon: <EmojiEventsIcon /> },
 ];
 
+// Compact dropdown for the desktop top bar.
+function LanguageSelect() {
+  const { t, i18n } = useTranslation();
+  return (
+    <Select<Language>
+      value={(i18n.resolvedLanguage ?? 'custom') as Language}
+      onChange={(e) => changeLanguage(e.target.value as Language)}
+      size="small"
+      variant="standard"
+      disableUnderline
+      aria-label={t('nav.language')}
+      sx={{
+        color: 'inherit',
+        '& .MuiSelect-icon': { color: 'inherit' },
+        '& .MuiSelect-select': { py: 0.5 },
+      }}
+    >
+      {LANGUAGES.map((lng) => (
+        <MenuItem key={lng} value={lng}>
+          {t(`languages.${lng}`)}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+}
+
 export default function NavBar() {
+  const { t, i18n } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -77,7 +110,7 @@ export default function NavBar() {
 
             {/* Desktop nav */}
             <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
-              {links.map(({ to, label, end }) => (
+              {links.map(({ to, labelKey, end }) => (
                 <Button
                   key={to}
                   component={NavLink}
@@ -115,9 +148,14 @@ export default function NavBar() {
                     },
                   }}
                 >
-                  {label}
+                  {t(labelKey)}
                 </Button>
               ))}
+            </Box>
+
+            {/* Desktop language selector (right) */}
+            <Box sx={{ display: { xs: 'none', md: 'block' }, ml: 'auto' }}>
+              <LanguageSelect />
             </Box>
 
             {/* Mobile hamburger */}
@@ -125,7 +163,7 @@ export default function NavBar() {
               <IconButton
                 color="inherit"
                 edge="end"
-                aria-label="ouvrir le menu"
+                aria-label={t('nav.home')}
                 onClick={() => setDrawerOpen(true)}
                 sx={{
                   transition: 'transform 0.2s ease',
@@ -152,17 +190,13 @@ export default function NavBar() {
               StatBar
             </Typography>
           </Box>
-          <IconButton
-            onClick={() => setDrawerOpen(false)}
-            size="small"
-            aria-label="fermer le menu"
-          >
+          <IconButton onClick={() => setDrawerOpen(false)} size="small" aria-label="close">
             <CloseIcon />
           </IconButton>
         </Box>
         <Divider />
         <List sx={{ pt: 1 }}>
-          {links.map(({ to, label, end, icon }) => (
+          {links.map(({ to, labelKey, end, icon }) => (
             <ListItem key={to} disablePadding>
               <ListItemButton
                 component={NavLink}
@@ -186,10 +220,33 @@ export default function NavBar() {
                 }}
               >
                 <ListItemIcon sx={{ color: 'primary.main', minWidth: 40 }}>{icon}</ListItemIcon>
-                <ListItemText primary={label} />
+                <ListItemText primary={t(labelKey)} />
               </ListItemButton>
             </ListItem>
           ))}
+        </List>
+        <Divider />
+        <Typography variant="overline" color="text.secondary" sx={{ px: 2, pt: 1, display: 'block' }}>
+          {t('nav.language')}
+        </Typography>
+        <List>
+          {LANGUAGES.map((lng) => {
+            const active = (i18n.resolvedLanguage ?? 'custom') === lng;
+            return (
+              <ListItem key={lng} disablePadding>
+                <ListItemButton
+                  selected={active}
+                  onClick={() => {
+                    changeLanguage(lng);
+                    setDrawerOpen(false);
+                  }}
+                >
+                  <ListItemText primary={t(`languages.${lng}`)} />
+                  {active && <CheckIcon fontSize="small" color="primary" />}
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
       </Drawer>
     </>

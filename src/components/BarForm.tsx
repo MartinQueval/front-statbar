@@ -12,7 +12,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
-import { NOTE_CATEGORIES, NOTE_CATEGORY_LABELS, NoteCategory } from '../types/bar';
+import { useTranslation } from 'react-i18next';
+import { NOTE_CATEGORIES, NoteCategory } from '../types/bar';
 import type { Bar, BarInput } from '../types/bar';
 import LocationPicker from './LocationPicker';
 import { searchPlaces } from '../api/geocode';
@@ -44,6 +45,7 @@ function buildInitialNotes(initial?: Bar): NoteState {
 }
 
 export default function BarForm({ initial, submitLabel, submitting, onSubmit, extraActions }: Props) {
+  const { t } = useTranslation();
   const [name, setName] = useState(initial?.name ?? '');
   const [lat, setLat] = useState<number | null>(initial?.lat ?? null);
   const [lng, setLng] = useState<number | null>(initial?.lng ?? null);
@@ -81,7 +83,7 @@ export default function BarForm({ initial, submitLabel, submitting, onSubmit, ex
     setError(null);
 
     if (!name.trim() || lat == null || lng == null) {
-      setError('Renseigne le nom et clique sur la carte pour placer le bar.');
+      setError(t('form.validation'));
       return;
     }
 
@@ -109,7 +111,7 @@ export default function BarForm({ initial, submitLabel, submitting, onSubmit, ex
             isOptionEqualToValue={(option, value) =>
               typeof value !== 'string' && option.id === value.id
             }
-            noOptionsText="Aucun lieu trouvé à Rouen"
+            noOptionsText={t('form.noOptions')}
             onInputChange={(_, value, reason) => {
               if (reason === 'input' || reason === 'clear') setName(value);
             }}
@@ -135,10 +137,10 @@ export default function BarForm({ initial, submitLabel, submitting, onSubmit, ex
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Nom du bar"
+                label={t('form.nameLabel')}
                 required
                 fullWidth
-                helperText="Tape le nom : on cherche le lieu à Rouen et on place le pin."
+                helperText={t('form.nameHelper')}
                 slotProps={{
                   ...params.slotProps,
                   input: {
@@ -156,24 +158,15 @@ export default function BarForm({ initial, submitLabel, submitting, onSubmit, ex
           />
 
           <Box>
-            <Typography variant="subtitle1" gutterBottom>
-              Position sur la carte
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              Clique sur la carte pour placer le bar.
-            </Typography>
             <LocationPicker lat={lat} lng={lng} onChange={handleLocation} />
           </Box>
 
           <Box>
-            <Typography variant="subtitle1" gutterBottom>
-              Notes (0 à 5, par demi-point)
-            </Typography>
             <Stack spacing={2}>
               {NOTE_CATEGORIES.map((cat) => (
                 <Box key={cat}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography>{NOTE_CATEGORY_LABELS[cat]}</Typography>
+                    <Typography>{t(`categories.${cat}`)}</Typography>
                     <Typography color="primary" sx={{ fontWeight: 700 }}>
                       {notes[cat].toFixed(1)}
                     </Typography>
@@ -205,7 +198,7 @@ export default function BarForm({ initial, submitLabel, submitting, onSubmit, ex
               disabled={submitting}
               size="large"
             >
-              {submitting ? 'Enregistrement…' : submitLabel}
+              {submitting ? t('form.saving') : submitLabel}
             </Button>
           </Box>
         </Stack>
