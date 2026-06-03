@@ -1,73 +1,65 @@
-# React + TypeScript + Vite
+# StatBar — Front
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 🔗 Site en ligne : **[statbar.vercel.app](https://statbar.vercel.app)**
 
-Currently, two official plugins are available:
+Frontend de **StatBar**, l'app pour noter, cartographier et classer ses bars préférés.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Interface React + TypeScript qui consomme l'API [`api-bar`](https://github.com/MartinQueval/api-bar).
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Fonctionnalités
 
-## Expanding the ESLint configuration
+- **Accueil** — présentation et accès rapide aux 3 sections (layout adapté au mobile).
+- **Ajouter un bar** — recherche du lieu par son nom (autocomplétion **Photon / OpenStreetMap**, centrée sur Rouen) qui place automatiquement le pin, ou placement manuel sur la carte ; notation par catégorie via sliders.
+- **Carte** — tous les bars affichés sur une carte interactive **Leaflet** avec leurs notes.
+- **Classement** — tri par moyenne ou par catégorie de note, avec étoiles et podium.
+- **Multilingue** — Français, English et un mode **Custom** personnalisable (par défaut), changement à chaud et mémorisé.
+- **UX soignée** — glassmorphism, animations, transitions de page, responsive mobile, police TT Drugs.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- [Vite](https://vite.dev/) + [React](https://react.dev/) + TypeScript
+- [MUI](https://mui.com/) (composants + thème)
+- [react-router-dom](https://reactrouter.com/) — navigation
+- [react-leaflet](https://react-leaflet.js.org/) + OpenStreetMap — cartes
+- [axios](https://axios-http.com/) — appels API
+- [react-i18next](https://react.i18next.com/) — internationalisation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 Démarrage local
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev      # http://localhost:5173
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+L'API doit tourner en parallèle (voir le repo [`api-bar`](https://github.com/MartinQueval/api-bar)).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ⚙️ Variables d'environnement
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Crée un fichier `.env` (voir `.env.example`) :
+
+```bash
+# URL de l'API (préfixe /api inclus)
+VITE_API_URL=http://localhost:4000/api        # local
+# VITE_API_URL=https://api-bar-n4v8.onrender.com/api   # production
 ```
+
+> Sur Vercel, `VITE_API_URL` est définie dans les variables d'environnement du projet.
+
+## 📦 Scripts
+
+| Commande | Description |
+|---|---|
+| `npm run dev` | Serveur de développement (HMR) |
+| `npm run build` | Build de production (`tsc -b && vite build`) |
+| `npm run preview` | Prévisualise le build de production |
+| `npm run lint` | Analyse ESLint |
+
+## 🌍 Déploiement
+
+Hébergé sur **Vercel** ([statbar.vercel.app](https://statbar.vercel.app)). Le fichier `vercel.json` réécrit toutes les routes vers `index.html` (SPA), pour que les routes client (`/carte`, `/classement`, `/modifier/:id`) survivent à un rechargement.
+
+## 🔤 Polices
+
+La police **TT Drugs** (auto-hébergée dans `src/assets/fonts`) est en version *Trial* — une licence commerciale [TypeType](https://typetype.org/) est requise pour un usage en production publique.
