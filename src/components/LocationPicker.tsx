@@ -1,4 +1,5 @@
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import type { LatLngExpression } from 'leaflet';
 import { barIcon } from './barIcon';
 
@@ -20,6 +21,17 @@ function ClickHandler({ onChange }: { onChange: Props['onChange'] }) {
   return null;
 }
 
+// Recenters the map when lat/lng change (e.g. after picking a search suggestion).
+function RecenterOnChange({ lat, lng }: { lat: number | null; lng: number | null }) {
+  const map = useMap();
+  useEffect(() => {
+    if (lat != null && lng != null) {
+      map.setView([lat, lng], map.getZoom());
+    }
+  }, [lat, lng, map]);
+  return null;
+}
+
 export default function LocationPicker({ lat, lng, onChange }: Props) {
   const center: LatLngExpression = lat != null && lng != null ? [lat, lng] : DEFAULT_CENTER;
 
@@ -34,6 +46,7 @@ export default function LocationPicker({ lat, lng, onChange }: Props) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <ClickHandler onChange={onChange} />
+      <RecenterOnChange lat={lat} lng={lng} />
       {lat != null && lng != null && <Marker position={[lat, lng]} icon={barIcon} />}
     </MapContainer>
   );

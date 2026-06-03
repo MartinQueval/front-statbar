@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   TextField,
   Button,
@@ -8,11 +8,15 @@ import {
   Stack,
   Alert,
   Typography,
+  Autocomplete,
+  CircularProgress,
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import { NOTE_CATEGORIES, NOTE_CATEGORY_LABELS, NoteCategory } from '../types/bar';
 import type { Bar, BarInput } from '../types/bar';
 import LocationPicker from './LocationPicker';
+import { searchPlaces } from '../api/geocode';
+import type { PlaceSuggestion } from '../api/geocode';
 
 interface Props {
   initial?: Bar;
@@ -46,6 +50,27 @@ export default function BarForm({ initial, submitLabel, submitting, onSubmit, ex
   const [notes, setNotes] = useState<NoteState>(() => buildInitialNotes(initial));
   const [error, setError] = useState<string | null>(null);
 
+  // Place search (Photon) for the name field
+  const [options, setOptions] = useState<PlaceSuggestion[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+
+  // Debounced geocoding as the user types the bar name.
+  useEffect(() => {
+    const q = name.trim();
+    if (q.length < 3) {
+      setOptions([]);
+      setSearchLoading(false);
+      return;
+    }
+    setSearchLoading(true);
+    const handle = setTimeout(async () => {
+      const results = await searchPlaces(q);
+      setOptions(results);
+      setSearchLoading(false);
+    }, 350);
+    return () => clearTimeout(handle);
+  }, [name]);
+
   const handleLocation = (newLat: number, newLng: number) => {
     setLat(Number(newLat.toFixed(6)));
     setLng(Number(newLng.toFixed(6)));
@@ -72,12 +97,62 @@ export default function BarForm({ initial, submitLabel, submitting, onSubmit, ex
     <Paper sx={{ p: 3 }}>
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Stack spacing={3}>
-          <TextField
-            label="Nom du bar"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            fullWidth
+          <Autocomplete<PlaceSuggestion, false, false, true>
+            freeSolo
+            options={options}
+            filterOptions={(x) => x}
+            inputValue={name}
+            loading={searchLoading}
+            getOptionLabel={(option) =>
+              typeof option === 'string' ? option : option.name
+            }
+            isOptionEqualToValue={(option, value) =>
+              typeof value !== 'string' && option.id === value.id
+            }
+            noOptionsText="Aucun lieu trouvé à Rouen"
+            onInputChange={(_, value, reason) => {
+              if (reason === 'input' || reason === 'clear') setName(value);
+            }}
+            onChange={(_, value) => {
+              if (value && typeof value !== 'string') {
+                setName(value.name);
+                setLat(value.lat);
+                setLng(value.lng);
+              }
+            }}
+            renderOption={(props, option) => (
+              <Box component="li" {...props} key={option.id}>
+                <Box>
+                  <Typography sx={{ fontWeight: 600 }}>{option.name}</Typography>
+                  {option.label !== option.name && (
+                    <Typography variant="caption" color="text.secondary">
+                      {option.label.replace(`${option.name} — `, '')}
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Nom du bar"
+                required
+                fullWidth
+                helperText="Tape le nom : on cherche le lieu à Rouen et on place le pin."
+                slotProps={{
+                  ...params.slotProps,
+                  input: {
+                    ...params.slotProps.input,
+                    endAdornment: (
+                      <>
+                        {searchLoading ? <CircularProgress color="inherit" size={18} /> : null}
+                        {params.slotProps.input.endAdornment}
+                      </>
+                    ),
+                  },
+                }}
+              />
+            )}
           />
 
           <Box>
