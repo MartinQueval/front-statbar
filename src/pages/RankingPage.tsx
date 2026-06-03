@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Container,
   Typography,
@@ -18,15 +18,22 @@ import {
   Card,
   CardContent,
   Stack,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import EditIcon from '@mui/icons-material/Edit';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { listBars } from '../api/barApi';
+import { NOTE_CATEGORIES, NoteCategory } from '../types/bar';
 import type { Bar } from '../types/bar';
 
 const MEDALS = ['#FFD700', '#C0C0C0', '#CD7F32'];
+
+type SortKey = 'moy' | NoteCategory;
 
 function RankBadge({ index }: { index: number }) {
   if (index < 3) return <EmojiEventsIcon sx={{ color: MEDALS[index] }} />;
@@ -39,24 +46,65 @@ function moyColor(moy: number) {
   return 'default' as const;
 }
 
+function sortValue(bar: Bar, key: SortKey): number {
+  if (key === 'moy') return bar.moy;
+  return bar.note.find((n) => n.category === key)?.value ?? 0;
+}
+
 export default function RankingPage() {
   const { t } = useTranslation();
   const [bars, setBars] = useState<Bar[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<SortKey>('moy');
 
   useEffect(() => {
     listBars()
-      .then((data) => setBars([...data].sort((a, b) => b.moy - a.moy)))
+      .then(setBars)
       .catch((e: Error) => setError(e.message))
       .finally(() => setLoading(false));
   }, []);
 
+  const sortedBars = useMemo(
+    () => [...bars].sort((a, b) => sortValue(b, sortBy) - sortValue(a, sortBy)),
+    [bars, sortBy],
+  );
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
-        {t('ranking.title')}
-      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 2,
+          mb: 1,
+        }}
+      >
+        <Typography variant="h4" component="h1" sx={{ fontWeight: 700 }}>
+          {t('ranking.title')}
+        </Typography>
+
+        {!loading && !error && bars.length > 0 && (
+          <FormControl size="small" sx={{ minWidth: 200 }}>
+            <InputLabel id="sort-label">{t('ranking.sortBy')}</InputLabel>
+            <Select
+              labelId="sort-label"
+              label={t('ranking.sortBy')}
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortKey)}
+            >
+              <MenuItem value="moy">{t('ranking.colAverage')}</MenuItem>
+              {NOTE_CATEGORIES.map((cat) => (
+                <MenuItem key={cat} value={cat}>
+                  {t(`categories.${cat}`)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+      </Box>
 
       {loading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
@@ -72,8 +120,19 @@ export default function RankingPage() {
       {/* Mobile: stacked cards */}
       {!loading && !error && bars.length > 0 && (
         <Stack spacing={2} sx={{ mt: 2, display: { xs: 'flex', md: 'none' } }}>
-          {bars.map((bar, idx) => (
-            <Card key={bar._id} variant="outlined">
+          {sortedBars.map((bar, idx) => (
+            <Card
+              key={bar._id}
+              variant="outlined"
+              className="reveal"
+              style={{ animationDelay: `${Math.min(idx, 12) * 60}ms` }}
+              sx={{
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 14px 34px rgba(31, 41, 36, 0.16)',
+                },
+              }}
+            >
               <CardContent sx={{ pb: '16px !important' }}>
                 <Box
                   sx={{
@@ -101,7 +160,8 @@ export default function RankingPage() {
                     component={RouterLink}
                     to={`/modifier/${bar._id}`}
                     size="small"
-                    aria-label={`Modifier ${bar.name}`}
+                    aria-label={`${t('editBar.title')} ${bar.name}`}
+                    sx={{ color: 'primary.main' }}
                   >
                     <EditIcon fontSize="small" />
                   </IconButton>
@@ -131,7 +191,7 @@ export default function RankingPage() {
       {/* Desktop: table */}
       {!loading && !error && bars.length > 0 && (
         <Paper sx={{ mt: 2, display: { xs: 'none', md: 'block' } }}>
-          <Table>
+          <Table sx={{ '& tbody tr:last-child td': { border: 0 } }}>
             <TableHead>
               <TableRow>
                 <TableCell width={60}>{t('ranking.colRank')}</TableCell>
@@ -142,8 +202,13 @@ export default function RankingPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {bars.map((bar, idx) => (
-                <TableRow key={bar._id} hover>
+              {sortedBars.map((bar, idx) => (
+                <TableRow
+                  key={bar._id}
+                  hover
+                  className="reveal"
+                  style={{ animationDelay: `${Math.min(idx, 14) * 45}ms` }}
+                >
                   <TableCell>
                     <RankBadge index={idx} />
                   </TableCell>
@@ -164,10 +229,10 @@ export default function RankingPage() {
                       <IconButton
                         component={RouterLink}
                         to={`/modifier/${bar._id}`}
-                        size="small"
-                        aria-label={`Modifier ${bar.name}`}
+                        aria-label={`${t('editBar.title')} ${bar.name}`}
+                        sx={{ color: 'primary.main' }}
                       >
-                        <EditIcon fontSize="small" />
+                        <EditIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>

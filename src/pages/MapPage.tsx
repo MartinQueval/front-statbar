@@ -40,7 +40,16 @@ export default function MapPage() {
       {error && <Alert severity="error">{error}</Alert>}
 
       {!loading && !error && (
-        <Box sx={{ height: '70vh', borderRadius: 2, overflow: 'hidden' }}>
+        <Box
+          className="reveal"
+          sx={{
+            height: '70vh',
+            borderRadius: 3,
+            overflow: 'hidden',
+            boxShadow: '0 14px 40px rgba(31, 41, 36, 0.18)',
+            border: '1px solid rgba(255, 255, 255, 0.5)',
+          }}
+        >
           <MapContainer
             center={center}
             zoom={zoom}

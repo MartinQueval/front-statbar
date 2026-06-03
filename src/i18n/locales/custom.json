@@ -12,8 +12,8 @@
     "en": "English"
   },
   "home": {
-    "welcome": "Tu es sur StatBar",
-    "subtitle": "Le classement des bars préférés d'Inès et Martin",
+    "welcome": "StatBar",
+    "subtitle": "Le classement des bars préférés de Martin et Inès",
     "cta": "Y aller",
     "cards": {
       "add": {
@@ -61,7 +61,8 @@
     "colBar": "Bar",
     "colNote": "Note",
     "colAverage": "Moyenne",
-    "editTooltip": "Modifier / supprimer"
+    "editTooltip": "Modifier / supprimer",
+    "sortBy": "Trier par"
   },
   "categories": {
     "DRINK": "Boissons",

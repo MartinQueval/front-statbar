@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -25,7 +25,7 @@ import MapIcon from '@mui/icons-material/Map';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGES, changeLanguage } from '../i18n';
 import type { Language } from '../i18n';
@@ -65,7 +65,38 @@ function LanguageSelect() {
 
 export default function NavBar() {
   const { t, i18n } = useTranslation();
+  const { pathname } = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Sliding "magic line" indicator under the desktop nav links.
+  const linksRef = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0, visible: false });
+
+  const activeIndex = links.findIndex((l) =>
+    l.end ? pathname === l.to : pathname.startsWith(l.to),
+  );
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const target = hovered ?? (activeIndex >= 0 ? activeIndex : null);
+      const container = linksRef.current;
+      if (target == null || !container) {
+        setIndicator((i) => ({ ...i, visible: false }));
+        return;
+      }
+      const items = container.querySelectorAll<HTMLElement>('.nav-item');
+      const el = items[target];
+      if (!el) {
+        setIndicator((i) => ({ ...i, visible: false }));
+        return;
+      }
+      setIndicator({ left: el.offsetLeft, width: el.offsetWidth, visible: true });
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [hovered, activeIndex, pathname, i18n.resolvedLanguage]);
 
   return (
     <>
@@ -109,48 +140,52 @@ export default function NavBar() {
             </Box>
 
             {/* Desktop nav */}
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
-              {links.map(({ to, labelKey, end }) => (
+            <Box
+              ref={linksRef}
+              onMouseLeave={() => setHovered(null)}
+              sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, position: 'relative' }}
+            >
+              {links.map(({ to, labelKey, end }, idx) => (
                 <Button
                   key={to}
+                  className="nav-item"
                   component={NavLink}
                   to={to}
                   end={end}
                   color="inherit"
+                  disableRipple
+                  onMouseEnter={() => setHovered(idx)}
                   sx={{
-                    position: 'relative',
-                    overflow: 'hidden',
-                    transition: 'background-color 0.25s ease, transform 0.2s ease',
-                    '&::after': {
-                      content: '""',
-                      position: 'absolute',
-                      bottom: 6,
-                      left: '50%',
-                      width: 0,
-                      height: 2,
-                      backgroundColor: 'currentColor',
-                      transition: 'width 0.3s ease, left 0.3s ease',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'rgba(255,255,255,0.08)',
-                      transform: 'translateY(-2px)',
-                    },
-                    '&:hover::after': {
-                      width: '60%',
-                      left: '20%',
-                    },
-                    '&.active': {
-                      backgroundColor: 'rgba(255,255,255,0.18)',
-                    },
-                    '&.active::after': {
-                      width: '60%',
-                      left: '20%',
-                    },
+                    px: 1,
+                    minWidth: 'auto',
+                    backgroundColor: 'transparent',
+                    borderRadius: 0,
+                    opacity: 0.8,
+                    transition: 'opacity 0.25s ease',
+                    '&:hover': { backgroundColor: 'transparent', opacity: 1 },
+                    '&.active': { opacity: 1 },
                   }}
                 >
                   {t(labelKey)}
                 </Button>
               ))}
+              {/* Single sliding underline that translates between tabs */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: 4,
+                  left: 0,
+                  height: 2,
+                  borderRadius: 2,
+                  backgroundColor: 'currentColor',
+                  pointerEvents: 'none',
+                  width: indicator.width,
+                  opacity: indicator.visible ? 1 : 0,
+                  transform: `translateX(${indicator.left}px)`,
+                  transition:
+                    'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), width 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease',
+                }}
+              />
             </Box>
 
             {/* Desktop language selector (right) */}

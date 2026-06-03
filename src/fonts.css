@@ -1,0 +1,53 @@
+/* TT Drugs (Trial) — self-hosted from src/assets/fonts/tt_drugs */
+
+@font-face {
+  font-family: 'TT Drugs';
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/tt_drugs/TT Drugs Trial Thin.otf') format('opentype');
+}
+@font-face {
+  font-family: 'TT Drugs';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/tt_drugs/TT Drugs Trial Light.otf') format('opentype');
+}
+@font-face {
+  font-family: 'TT Drugs';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/tt_drugs/TT Drugs Trial Regular.otf') format('opentype');
+}
+@font-face {
+  font-family: 'TT Drugs';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/tt_drugs/TT Drugs Trial Bold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'TT Drugs';
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/tt_drugs/TT Drugs Trial Black.otf') format('opentype');
+}
+
+/* Italics (most-used weights) */
+@font-face {
+  font-family: 'TT Drugs';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('./assets/fonts/tt_drugs/TT Drugs Trial Italic.otf') format('opentype');
+}
+@font-face {
+  font-family: 'TT Drugs';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('./assets/fonts/tt_drugs/TT Drugs Trial Bold Italic.otf') format('opentype');
+}

@@ -61,7 +61,8 @@
     "colBar": "Bar",
     "colNote": "Note",
     "colAverage": "Moyenne",
-    "editTooltip": "Modifier / supprimer"
+    "editTooltip": "Modifier / supprimer",
+    "sortBy": "Trier par"
   },
   "categories": {
     "DRINK": "Boissons",

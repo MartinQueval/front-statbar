@@ -5,6 +5,7 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import 'leaflet/dist/leaflet.css';
 import './leafletIconFix';
 import './i18n';
+import './fonts.css';
 import './index.css';
 import theme from './theme';
 import App from './App.tsx';

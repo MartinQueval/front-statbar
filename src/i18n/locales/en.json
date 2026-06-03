@@ -61,7 +61,8 @@
     "colBar": "Bar",
     "colNote": "Rating",
     "colAverage": "Average",
-    "editTooltip": "Edit / delete"
+    "editTooltip": "Edit / delete",
+    "sortBy": "Sort by"
   },
   "categories": {
     "DRINK": "Drinks",
