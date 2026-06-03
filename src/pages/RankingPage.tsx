@@ -41,8 +41,8 @@ function RankBadge({ index }: { index: number }) {
 }
 
 function moySx(moy: number) {
-  if (moy >= 3.5) return { backgroundColor: '#fbcf4c', color: '#1a1a1a' };
-  if (moy >= 2.5) return { backgroundColor: 'primary.main', color: '#fff' };
+  if (moy >= 3.5) return { backgroundColor: 'primary.main', color: '#fff' };
+  if (moy >= 2.5) return { backgroundColor: '#fbcf4c', color: '#1a1a1a' };
   return { backgroundColor: '#1a1a1a', color: '#fff' };
 }
 
