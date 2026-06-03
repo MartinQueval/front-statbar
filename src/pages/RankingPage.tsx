@@ -40,10 +40,10 @@ function RankBadge({ index }: { index: number }) {
   return <Typography sx={{ fontWeight: 700 }}>{index + 1}</Typography>;
 }
 
-function moyColor(moy: number) {
-  if (moy >= 3.5) return 'success' as const;
-  if (moy >= 2.5) return 'primary' as const;
-  return 'default' as const;
+function moySx(moy: number) {
+  if (moy >= 3.5) return { backgroundColor: '#fbcf4c', color: '#1a1a1a' };
+  if (moy >= 2.5) return { backgroundColor: 'primary.main', color: '#fff' };
+  return { backgroundColor: '#1a1a1a', color: '#fff' };
 }
 
 function sortValue(bar: Bar, key: SortKey): number {
@@ -179,7 +179,7 @@ export default function RankingPage() {
                   <Chip
                     size="small"
                     label={`${bar.moy.toFixed(2)} / 5`}
-                    color={moyColor(bar.moy)}
+                    sx={{ ...moySx(bar.moy), fontWeight: 700 }}
                   />
                 </Box>
               </CardContent>
@@ -221,7 +221,7 @@ export default function RankingPage() {
                   <TableCell align="right">
                     <Chip
                       label={`${bar.moy.toFixed(2)} / 5`}
-                      color={moyColor(bar.moy)}
+                      sx={{ ...moySx(bar.moy), fontWeight: 700 }}
                     />
                   </TableCell>
                   <TableCell align="right">
