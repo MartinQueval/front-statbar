@@ -70,6 +70,9 @@ export default function RankingPage() {
     [bars, sortBy],
   );
 
+  // Label of the currently sorted value (the average by default).
+  const sortLabel = sortBy === 'moy' ? t('ranking.colAverage') : t(`categories.${sortBy}`);
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box
@@ -178,8 +181,8 @@ export default function RankingPage() {
                   <Rating value={bar.moy} precision={0.1} max={5} readOnly size="small" />
                   <Chip
                     size="small"
-                    label={`${bar.moy.toFixed(2)} / 5`}
-                    sx={{ ...moySx(bar.moy), fontWeight: 700 }}
+                    label={`${sortLabel} : ${sortValue(bar, sortBy).toFixed(2)} / 5`}
+                    sx={{ ...moySx(sortValue(bar, sortBy)), fontWeight: 700 }}
                   />
                 </Box>
               </CardContent>
@@ -196,8 +199,8 @@ export default function RankingPage() {
               <TableRow>
                 <TableCell width={60}>{t('ranking.colRank')}</TableCell>
                 <TableCell>{t('ranking.colBar')}</TableCell>
-                <TableCell align="center">{t('ranking.colNote')}</TableCell>
-                <TableCell align="right">{t('ranking.colAverage')}</TableCell>
+                <TableCell align="center">{t('ranking.colAverage')}</TableCell>
+                <TableCell align="right">{sortLabel}</TableCell>
                 <TableCell align="right" width={60}></TableCell>
               </TableRow>
             </TableHead>
@@ -220,8 +223,8 @@ export default function RankingPage() {
                   </TableCell>
                   <TableCell align="right">
                     <Chip
-                      label={`${bar.moy.toFixed(2)} / 5`}
-                      sx={{ ...moySx(bar.moy), fontWeight: 700 }}
+                      label={`${sortValue(bar, sortBy).toFixed(2)} / 5`}
+                      sx={{ ...moySx(sortValue(bar, sortBy)), fontWeight: 700 }}
                     />
                   </TableCell>
                   <TableCell align="right">
